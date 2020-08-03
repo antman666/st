@@ -1,34 +1,26 @@
-st - simple terminal
+st
 --------------------
-st is a simple terminal emulator for X which sucks less.
+st 是一个基于X的简洁轻量的终端模拟器。
 
 
-Requirements
+依赖
 ------------
-In order to build st you need the Xlib header files.
+安装st你需要Xlib等一些头文件(xorg)
 
 
-Installation
+安装
 ------------
-Edit config.mk to match your local setup (st is installed into
-the /usr/local namespace by default).
+编辑 config.mk 等文件来完成一些本地化配置 (dwm会默认安装到/usr/local).
 
-Afterwards enter the following command to build and install st (if
-necessary as root):
+之后运行以下命令来安装编辑过的dwm到机器上(需要root权限):
 
-    make clean install
+    make install clean
 
 
-Running st
+运行st
 ----------
-If you did not install st with make clean install, you must compile
-the st terminfo entry with the following command:
+如果你不想用`make clean install`来安装, 您必须使用以下命令编译st:
 
     tic -sx st.info
 
-See the man page for additional details.
-
-Credits
--------
-Based on Aurélien APTEL <aurelien dot aptel at gmail dot com> bt source code.
-
+更多信息参考手册。
