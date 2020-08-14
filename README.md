@@ -16,9 +16,14 @@ st
 
     make install clean
 
+用到的一些插件
+--------------
+- [st-alpha-0.8.2.diff](https://st.suckless.org/patches/alpha/)
+- [st-anysize-0.8.1.diff](https://st.suckless.org/patches/anysize/)
+- [st-scrollback-0.8.2.diff](https://st.suckless.org/patches/scrollback/)
 
 运行st
-----------
+-------------
 如果你不想用`make clean install`来安装, 您必须使用以下命令编译 st :
 
     tic -sx st.info
