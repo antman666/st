@@ -5,16 +5,16 @@ st
 
 依赖
 ------------
-安装 st 你需要 Xlib 等一些头文件(xorg)
+安装 st 你需要 Xlib 等一些头文件(xorg-apps and xorg-server)
 
 
 安装
 ------------
 编辑`config.h`等文件来完成一些本地化配置 ( st 会默认安装到 /usr/local ).
 
-之后运行以下命令来安装编辑过的 st 到机器上(需要root权限):
+之后运行以下命令来安装 st 到机器上:
 
-    make install clean
+    sudo make install clean
 
 用到的一些插件
 --------------
