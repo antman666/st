@@ -24,8 +24,8 @@ LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender\
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -mtune=native -fomit-frame-pointer
-STLDFLAGS  = $(LIBS) $(LDFLAGS) -Ofast
+STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -mtune=native -fomit-frame-pointer -fno-common
+STLDFLAGS  = $(LIBS) $(LDFLAGS) -Ofast -ljemalloc
 
 # OpenBSD:
 #CPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600 -D_BSD_SOURCE
