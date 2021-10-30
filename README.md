@@ -6,6 +6,8 @@
 
 安装 st 你需要 Xlib 等一些头文件(xorg-apps and xorg-server)
 
+同时你还需要一些其他的东西, 比如 jemalloc
+
 ## 安装
 
 编辑`config.h`等文件来完成一些本地化配置 ( st 会默认安装到 /usr/local/bin ).
