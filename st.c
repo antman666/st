@@ -1942,7 +1942,7 @@ strhandle(void)
                 break;
             p = strescseq.args[2];
         /* FALLTHROUGH */
-        case 104: /* color reset, here p = NULL */
+        case 104: /* color reset */
             j = (narg > 1) ? atoi(strescseq.args[1]) : -1;
             if (xsetcolorname(j, p)) {
                 if (par == 104 && narg <= 1)
@@ -2486,6 +2486,10 @@ check_control_code:
     if (width == 2) {
         gp->mode |= ATTR_WIDE;
         if (term.c.x+1 < term.col) {
+            if (gp[1].mode == ATTR_WIDE && term.c.x+2 < term.col){
+                gp[2].u = ' ';
+				gp[2].mode &= ~ATTR_WDUMMY;
+            }
             gp[1].u = '\0';
             gp[1].mode = ATTR_WDUMMY;
         }
