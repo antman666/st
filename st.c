@@ -356,21 +356,6 @@ utf8validate(Rune *u, size_t i)
     return i;
 }
 
-static const char base64_digits[] = {
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 62, 0, 0, 0,
-    63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 0, 0, 0, -1, 0, 0, 0, 0, 1,
-    2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 0, 0, 0, 0, 0, 0, 26, 27, 28, 29, 30, 31, 32, 33, 34,
-    35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-};
-
 char
 base64dec_getc(const char **src)
 {
@@ -384,6 +369,13 @@ base64dec(const char *src)
 {
     size_t in_len = strlen(src);
     char *result, *dst;
+    static const char base64_digits[256] = {
+        [43] = 62, 0, 0, 0, 63, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61,
+        0, 0, 0, -1, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 0, 0, 0, 0,
+        0, 0, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+        40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51
+    };
 
     if (in_len % 4)
         in_len += 4 - (in_len % 4);
@@ -1954,7 +1946,7 @@ strhandle(void)
                  * TODO if defaultbg color is changed, borders
                  * are dirty
                  */
-                redraw();
+                tfulldirt();
             }
             return;
         }
@@ -2486,9 +2478,9 @@ check_control_code:
     if (width == 2) {
         gp->mode |= ATTR_WIDE;
         if (term.c.x+1 < term.col) {
-            if (gp[1].mode == ATTR_WIDE && term.c.x+2 < term.col){
+            if (gp[1].mode == ATTR_WIDE && term.c.x+2 < term.col) {
                 gp[2].u = ' ';
-				gp[2].mode &= ~ATTR_WDUMMY;
+                gp[2].mode &= ~ATTR_WDUMMY;
             }
             gp[1].u = '\0';
             gp[1].mode = ATTR_WDUMMY;
@@ -2681,28 +2673,28 @@ redraw(void)
 void
 tsetcolor( int row, int start, int end, uint32_t fg, uint32_t bg )
 {
-	int i = start;
-	for( ; i < end; ++i )
-	{
-		term.line[row][i].fg = fg;
-		term.line[row][i].bg = bg;
-	}
+    int i = start;
+    for( ; i < end; ++i )
+    {
+        term.line[row][i].fg = fg;
+        term.line[row][i].bg = bg;
+    }
 }
 
 char *
 findlastany(char *str, const char** find, size_t len)
 {
-	char* found = NULL;
-	int i = 0;
-	for(found = str + strlen(str) - 1; found >= str; --found) {
-		for(i = 0; i < len; i++) {
-			if(strncmp(found, find[i], strlen(find[i])) == 0) {
-				return found;
-			}
-		}
-	}
+    char* found = NULL;
+    int i = 0;
+    for(found = str + strlen(str) - 1; found >= str; --found) {
+        for(i = 0; i < len; i++) {
+            if(strncmp(found, find[i], strlen(find[i])) == 0) {
+                return found;
+            }
+        }
+    }
 
-	return NULL;
+    return NULL;
 }
 
 /*
@@ -2713,86 +2705,86 @@ findlastany(char *str, const char** find, size_t len)
 */
 void
 copyurl(const Arg *arg) {
-	/* () and [] can appear in urls, but excluding them here will reduce false
-	 * positives when figuring out where a given url ends.
-	 */
-	static char URLCHARS[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		"abcdefghijklmnopqrstuvwxyz"
-		"0123456789-._~:/?#@!$&'*+,;=%";
+    /* () and [] can appear in urls, but excluding them here will reduce false
+     * positives when figuring out where a given url ends.
+     */
+    static char URLCHARS[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                             "abcdefghijklmnopqrstuvwxyz"
+                             "0123456789-._~:/?#@!$&'*+,;=%";
 
-	static const char* URLSTRINGS[] = {"http://", "https://"};
+    static const char* URLSTRINGS[] = {"http://", "https://"};
 
-	/* remove highlighting from previous selection if any */
-	if(sel.ob.x >= 0 && sel.oe.x >= 0)
-		tsetcolor(sel.nb.y, sel.ob.x, sel.oe.x + 1, defaultfg, defaultbg);
+    /* remove highlighting from previous selection if any */
+    if(sel.ob.x >= 0 && sel.oe.x >= 0)
+        tsetcolor(sel.nb.y, sel.ob.x, sel.oe.x + 1, defaultfg, defaultbg);
 
-	int i = 0,
-		row = 0, /* row of current URL */
-		col = 0, /* column of current URL start */
-		startrow = 0, /* row of last occurrence */
-		colend = 0, /* column of last occurrence */
-		passes = 0; /* how many rows have been scanned */
+    int i = 0,
+        row = 0, /* row of current URL */
+        col = 0, /* column of current URL start */
+        startrow = 0, /* row of last occurrence */
+        colend = 0, /* column of last occurrence */
+        passes = 0; /* how many rows have been scanned */
 
-	char *linestr = calloc(term.col+1, sizeof(Rune));
-	char *c = NULL,
-		 *match = NULL;
+    char *linestr = calloc(term.col+1, sizeof(Rune));
+    char *c = NULL,
+          *match = NULL;
 
-	row = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.y : term.bot;
-	LIMIT(row, term.top, term.bot);
-	startrow = row;
+    row = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.y : term.bot;
+    LIMIT(row, term.top, term.bot);
+    startrow = row;
 
-	colend = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.x : term.col;
-	LIMIT(colend, 0, term.col);
+    colend = (sel.ob.x >= 0 && sel.nb.y > 0) ? sel.nb.x : term.col;
+    LIMIT(colend, 0, term.col);
 
-	/*
- 	** Scan from (term.bot,term.col) to (0,0) and find
-	** next occurrance of a URL
-	*/
-	while(passes !=term.bot + 2) {
-		/* Read in each column of every row until
- 		** we hit previous occurrence of URL
-		*/
-		for (col = 0, i = 0; col < colend; ++col,++i) {
-			linestr[i] = term.line[row][col].u;
-		}
-		linestr[term.col] = '\0';
+    /*
+    ** Scan from (term.bot,term.col) to (0,0) and find
+    ** next occurrance of a URL
+    */
+    while(passes !=term.bot + 2) {
+        /* Read in each column of every row until
+        ** we hit previous occurrence of URL
+        */
+        for (col = 0, i = 0; col < colend; ++col,++i) {
+            linestr[i] = term.line[row][col].u;
+        }
+        linestr[term.col] = '\0';
 
-		if ((match = findlastany(linestr, URLSTRINGS,
-						sizeof(URLSTRINGS)/sizeof(URLSTRINGS[0]))))
-			break;
+        if ((match = findlastany(linestr, URLSTRINGS,
+                                 sizeof(URLSTRINGS)/sizeof(URLSTRINGS[0]))))
+            break;
 
-		if (--row < term.top)
-			row = term.bot;
+        if (--row < term.top)
+            row = term.bot;
 
-		colend = term.col;
-		passes++;
-	};
+        colend = term.col;
+        passes++;
+    };
 
-	if (match) {
-		/* must happen before trim */
-		selclear();
-		sel.ob.x = strlen(linestr) - strlen(match);
+    if (match) {
+        /* must happen before trim */
+        selclear();
+        sel.ob.x = strlen(linestr) - strlen(match);
 
-		/* trim the rest of the line from the url match */
-		for (c = match; *c != '\0'; ++c)
-			if (!strchr(URLCHARS, *c)) {
-				*c = '\0';
-				break;
-			}
+        /* trim the rest of the line from the url match */
+        for (c = match; *c != '\0'; ++c)
+            if (!strchr(URLCHARS, *c)) {
+                *c = '\0';
+                break;
+            }
 
-		/* highlight selection by inverting terminal colors */
-		tsetcolor(row, sel.ob.x, sel.ob.x + strlen( match ), defaultbg, defaultfg);
+        /* highlight selection by inverting terminal colors */
+        tsetcolor(row, sel.ob.x, sel.ob.x + strlen( match ), defaultbg, defaultfg);
 
-		/* select and copy */
-		sel.mode = 1;
-		sel.type = SEL_REGULAR;
-		sel.oe.x = sel.ob.x + strlen(match)-1;
-		sel.ob.y = sel.oe.y = row;
-		selnormalize();
-		tsetdirt(sel.nb.y, sel.ne.y);
-		xsetsel(getsel());
-		xclipcopy();
-	}
+        /* select and copy */
+        sel.mode = 1;
+        sel.type = SEL_REGULAR;
+        sel.oe.x = sel.ob.x + strlen(match)-1;
+        sel.ob.y = sel.oe.y = row;
+        selnormalize();
+        tsetdirt(sel.nb.y, sel.ne.y);
+        xsetsel(getsel());
+        xclipcopy();
+    }
 
-	free(linestr);
+    free(linestr);
 }
