@@ -1,5 +1,5 @@
 # st version
-VERSION = 0.8.5
+VERSION = 0.9
 
 # Customize below to fit your system
 
@@ -24,7 +24,7 @@ LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender\
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -fomit-frame-pointer -fno-common -flto -fuse-ld=mold
+STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -fomit-frame-pointer -fno-common -flto=auto
 STLDFLAGS  = $(LIBS) $(LDFLAGS) -Wl,-Ofast,--sort-common,--as-needed,--strip-all,--hash-style=gnu,-ljemalloc
 
 # OpenBSD:
@@ -32,6 +32,7 @@ STLDFLAGS  = $(LIBS) $(LDFLAGS) -Wl,-Ofast,--sort-common,--as-needed,--strip-all
 #LIBS = -L$(X11LIB) -lm -lX11 -lutil -lXft \
 #       `$(PKG_CONFIG) --libs fontconfig` \
 #       `$(PKG_CONFIG) --libs freetype2`
+#MANPREFIX = ${PREFIX}/man
 
 # compiler and linker
 CC = cc
