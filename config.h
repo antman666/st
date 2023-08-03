@@ -94,7 +94,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.5;
+float alpha = 0.65;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -213,7 +213,7 @@ static Shortcut shortcuts[] = {
     {MODKEY | ControlMask, 	XK_Page_Down, 	kscrolldown, 	{.i = -1}},
     {ShiftMask, 			XK_Insert, 		selpaste, 		{.i = 0}},
     {TERMMOD, 				XK_Num_Lock, 	numlock, 		{.i = 0}},
-	{MODKEY | ControlMask, 	XK_l, 			copyurl, 		{.i = 0}},
+    {MODKEY | ControlMask, 	XK_l, 			copyurl, 		{.i = 0}},
 };
 
 /*
@@ -314,9 +314,9 @@ static Key key[] = {
     {XK_Up, 			Mod1Mask, 							"\033[1;3A", 	0, 		0},
     {XK_Up, 			ShiftMask | Mod1Mask, 				"\033[1;4A", 	0, 		0},
     {XK_Up, 			ControlMask, 						"\033[1;5A", 	0, 		0},
-    {XK_Up, 			ShiftMask | ControlMask, 			"\033[1;6A", 	0, 		0}, 
-    {XK_Up, 			ControlMask | Mod1Mask, 			"\033[1;7A", 	0, 		0}, 
-    {XK_Up, 			ShiftMask | ControlMask | Mod1Mask, "\033[1;8A", 	0, 		0},  
+    {XK_Up, 			ShiftMask | ControlMask, 			"\033[1;6A", 	0, 		0},
+    {XK_Up, 			ControlMask | Mod1Mask, 			"\033[1;7A", 	0, 		0},
+    {XK_Up, 			ShiftMask | ControlMask | Mod1Mask, "\033[1;8A", 	0, 		0},
     {XK_Up, 			XK_ANY_MOD, 						"\033[A", 		0, 		-1},
     {XK_Up, 			XK_ANY_MOD, 						"\033OA", 		0, 		+1},
     {XK_Down, 			ShiftMask, 							"\033[1;2B", 	0, 		0},

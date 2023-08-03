@@ -24,8 +24,8 @@ LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXrender\
 
 # flags
 STCPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600
-STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -fomit-frame-pointer -fno-common -flto=auto
-STLDFLAGS  = $(LIBS) $(LDFLAGS) -Wl,-Ofast,--sort-common,--as-needed,--strip-all,--hash-style=gnu,-ljemalloc
+STCFLAGS   = $(INCS) $(STCPPFLAGS) $(CPPFLAGS) -Ofast -march=native -fomit-frame-pointer -fno-common -fopenmp -flto=auto -fgraphite-identity -floop-nest-optimize -ftree-loop-distribution -floop-parallelize-all -ftree-parallelize-loops=2 -fdevirtualize-at-ltrans
+STLDFLAGS  = $(LIBS) $(LDFLAGS) -Wl,-Ofast,--sort-common,--as-needed,--strip-all,--hash-style=gnu,-lmimalloc -march=native -fopenmp
 
 # OpenBSD:
 #CPPFLAGS = -DVERSION=\"$(VERSION)\" -D_XOPEN_SOURCE=600 -D_BSD_SOURCE
